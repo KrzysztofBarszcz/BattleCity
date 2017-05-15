@@ -1,0 +1,10 @@
+The project will be a clone of the popular Nintendo game - Battle City. In this game, the player has to destroy enemy tanks and protect his base from them. There are some types of enemies: slow but very resistant with strong cannon, fast but vulnerable, balanced. Game offer various bonuses like better cannon, additional lifes, etc.
+
+
+Specification:
+UI implemented in WPF
+level editor
+two players mode
+highscore table
+many levels (at least more than one :))
+internet game (maybe)
