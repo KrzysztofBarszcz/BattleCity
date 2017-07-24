@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace BattleCity
 {
 	/// <summary>
-	/// Logika interakcji dla klasy MainWindow.xaml
+	/// Interaction logic for the main window
 	/// </summary>
 	public partial class MainWindow : Window
 	{

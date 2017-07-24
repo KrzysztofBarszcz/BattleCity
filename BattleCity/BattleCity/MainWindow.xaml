@@ -5,8 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BattleCity"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        Title="Battle City" Height="480" Width="512" ResizeMode="CanMinimize">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="13*"/>
+			<ColumnDefinition Width="2*"/>
+		</Grid.ColumnDefinitions>
+		<Canvas x:Name="mainCanvas"/>
+		<StackPanel x:Name="playerOneLifesTextBox" Grid.Column="1">
+			<Label x:Name="playerOneLabel" Content="Player 1:"/>
+			<Label x:Name="playerOnePointsLabel" Content="Points: 0"/>
+			<Label x:Name="playerOneLifesLabel" Content="Lifes: 2"/>
+
+			<Label x:Name="playerTwoLabel" Content="Player 1:"/>
+			<Label x:Name="playerTwoPointsLabel" Content="Points: 0"/>
+			<Label x:Name="playerTwoLifesLabel" Content="Lifes: 2"/>
+		</StackPanel>
+
+	</Grid>
+
 </Window>
