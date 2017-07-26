@@ -66,6 +66,9 @@ namespace BattleCity
 					case Options.TWO_PLAYERS:
 						break;
 					case Options.EDITOR:
+						LevelEditor levelEditor = new LevelEditor();
+						levelEditor.Show();
+						Close();
 						break;
 				}
 			}
