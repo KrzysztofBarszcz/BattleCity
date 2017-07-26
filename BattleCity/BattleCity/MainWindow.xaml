@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BattleCity"
         mc:Ignorable="d"
-        Title="Battle City" Height="480" Width="512" ResizeMode="CanMinimize" Loaded="mainWindow_Loaded">
+        Title="Battle City" Height="480" Width="512" ResizeMode="CanMinimize" Loaded="mainWindow_Loaded" KeyDown="mainWindow_KeyDown">
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="13*"/>
