@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using BattleCity.Elements;
 
 namespace BattleCity
 {
@@ -18,26 +19,25 @@ namespace BattleCity
 			Wall,
 			Water
 		}
-
+		
 		private Dictionary<String, BitmapImage> textures = new Dictionary<String, BitmapImage>();
 	
 		private String pathToTextures = "Images/LevelElements/";
+		private Position position;
+
 		public LevelEditor()
 		{
 			PrepareTextures();
 			InitializeComponent();
 			texturesListBox.ItemsSource = textures.Keys;
-			//textureImage.Source = new BitmapImage(new Uri(pathToTextures + "Concrete.bmp", UriKind.Relative));
-			
+			positionListBox.ItemsSource = Enum.GetNames(typeof (Position));
 		}
 
 		private void PrepareTextures()
 		{
-			foreach (var e in Enum.GetNames(typeof(Element))){
+			foreach (var e in Enum.GetNames(typeof (Element))){
 				Uri uri = new Uri(pathToTextures + e + ".bmp", UriKind.Relative);
 				var bitmap = new BitmapImage(uri);
-				/*var image = new Image();
-				image.Source = bitmap;*/
 				textures.Add(e, bitmap);
 			}
 		}
@@ -47,6 +47,12 @@ namespace BattleCity
 			var listBox = sender as ListBox;
 			var key = listBox.SelectedItem as String;
 			textureImage.Source = textures[key];
+		}
+
+		private void positionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			var item = (sender as ListBox).SelectedItem as String;
+			position = (Position)Enum.Parse(typeof (Position), item);
 		}
 	}
 }

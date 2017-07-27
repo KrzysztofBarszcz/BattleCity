@@ -5,15 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BattleCity"
         mc:Ignorable="d"
-        Title="Level editor" Height="300" Width="300">
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="3*"/>
-			<ColumnDefinition Width="13*"/>
-		</Grid.ColumnDefinitions>
-		<StackPanel >
+        Title="Level editor"  Padding="5" HorizontalAlignment="Left" ResizeMode="NoResize" VerticalAlignment="Top" SizeToContent="WidthAndHeight" >
+	<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
+		<StackPanel Margin="5" Width="100" >
+			<Label x:Name="texturesLabel" Content="Textures:"/>
 			<ListBox x:Name="texturesListBox" SelectionChanged="texturesListBox_SelectionChanged" />
-			<Image x:Name="textureImage" Width="32" Height="32" Margin="12,0,11,0"/>
+			<Label x:Name="positionLabel" Content="Position:"/>
+			<ListBox x:Name="positionListBox" SelectionChanged="positionListBox_SelectionChanged" />
+			<Label x:Name="previewLabel" Content="Preview:"/>
+			<Image x:Name="textureImage" Width="32" Height="32"/>
+
+
 		</StackPanel>
-	</Grid>
+		<Canvas x:Name="editorCanvas" Grid.Column="1" Width="416" Height="416" Background="Black"/>
+	</StackPanel>
 </Window>

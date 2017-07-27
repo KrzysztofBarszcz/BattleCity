@@ -67,6 +67,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Elements\Position.cs" />
     <Compile Include="LevelEditor.xaml.cs">
       <DependentUpon>LevelEditor.xaml</DependentUpon>
     </Compile>
@@ -119,6 +120,9 @@
     <Resource Include="Images\LevelElements\Water.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\UniqueElements\eagle.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
