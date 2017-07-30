@@ -9,6 +9,6 @@
 		LeftDown,
 		RightDown,
 		LeftUp,
-		RitghtUp
+		RightUp
 	}
 }
