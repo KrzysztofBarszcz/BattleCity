@@ -17,6 +17,6 @@
 
 
 		</StackPanel>
-		<Canvas x:Name="editorCanvas" Grid.Column="1" Width="416" Height="416" Background="Black"/>
+		<Canvas x:Name="editorCanvas" Grid.Column="1" Width="416" Height="416" Background="Black" MouseLeftButtonDown="editorCanvas_MouseLeftButtonDown"/>
 	</StackPanel>
 </Window>
