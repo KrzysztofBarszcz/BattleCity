@@ -53,9 +53,36 @@ namespace BattleCity
 			var clickPosition = e.GetPosition(sender as Canvas);
 			Element element = (Element)texturesListBox.SelectedItem;
 			var field = Field.createFieldFromElementAndPosition(clickPosition, element, position);
-			fields[field.row, field.column] = field;
-
+			if (!IsFieldForbidden(field))
+			{
+				fields[field.row, field.column] = field;
+			}
 			RedrawEditorScreen();
+		}
+
+		private bool IsFieldForbidden(Field field)
+		{
+			if (field.row == 0)
+			{
+				switch (field.column)//enemies starting points must be empty
+				{
+					case 0:
+					case 6:
+					case 12:
+						return true;
+				}
+			}
+			if (field.row == 12)
+			{
+				switch (field.column)//players starting points must be empty, eagle must remain
+				{
+					case 4:
+					case 6:
+					case 8:
+						return true;
+				}
+			}
+			return false;
 		}
 
 		private void RedrawEditorScreen()
