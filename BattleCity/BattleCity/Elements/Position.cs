@@ -2,6 +2,7 @@
 {
 	enum Position
 	{
+		Full,
 		Left,
 		Right,
 		Up,

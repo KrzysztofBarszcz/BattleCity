@@ -25,7 +25,9 @@ namespace BattleCity
 			PrepareTextures();
 			InitializeComponent();
 			texturesListBox.ItemsSource = textures.Keys;
+			texturesListBox.SelectedItem = Element.Wall;
 			positionListBox.ItemsSource = Enum.GetValues(typeof(Position));
+			positionListBox.SelectedItem = Position.Full;
 		}
 
 		private void PrepareTextures()
