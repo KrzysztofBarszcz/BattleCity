@@ -134,6 +134,7 @@ namespace BattleCity
 						var image = new Image();
 						image.Source = textures[fields[i, j].element];
 						image.Margin = new Thickness(j * 32, i * 32, 0, 0);
+						image.Clip = TrimTexture(fields[i, j].position);
 						editorCanvas.Children.Add(image);
 					}
 				}
