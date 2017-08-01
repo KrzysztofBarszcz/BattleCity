@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using BattleCity.Elements;
 
@@ -42,12 +43,46 @@ namespace BattleCity
 		private void texturesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			Element key = (Element) (sender as ListBox).SelectedItem;
+
 			textureImage.Source = textures[key];
 		}
 
 		private void positionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			position = (Position) (sender as ListBox).SelectedItem;
+			position = (Position)(sender as ListBox).SelectedItem;
+			textureImage.Clip = TrimTexture(position);
+		}
+
+		private Geometry TrimTexture(Position position)
+		{
+			switch (position)
+			{
+				case Position.Full:
+					return null;
+				case Position.Left:
+					return CreateGeometry(0, 0, 16, 32);
+				case Position.Right:
+					return CreateGeometry(16, 0, 16, 32);
+				case Position.Up:
+					return CreateGeometry(0, 0, 32, 16);
+				case Position.Down:
+					return CreateGeometry(0, 16, 32, 16);
+				case Position.LeftDown:
+					return CreateGeometry(0, 16, 16, 16);
+				case Position.RightDown:
+					return CreateGeometry(16, 16, 16, 16);
+				case Position.LeftUp:
+					return CreateGeometry(0, 0, 16, 16);
+				case Position.RightUp:
+					return CreateGeometry(16, 0, 16, 16);
+				default:
+					return null;
+			}
+		}
+
+		private Geometry CreateGeometry(int x, int y, int width, int height)
+		{
+			return textureImage.Clip = new RectangleGeometry(new Rect(x, y, width, height));
 		}
 
 		private void editorCanvas_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
