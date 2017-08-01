@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using BattleCity.Elements;
 
 namespace BattleCity
@@ -13,38 +11,24 @@ namespace BattleCity
 	/// </summary>
 	public partial class LevelEditor : Window
 	{
-
-		private Dictionary<Element, BitmapImage> textures = new Dictionary<Element, BitmapImage>();
-	
-		private String pathToTextures = "Images/LevelElements/";
 		private Position position;
 		private Element element;
 		private Field[,] fields = new Field[13, 13];
 
 		public LevelEditor()
 		{
-			PrepareTextures();
 			InitializeComponent();
-			texturesListBox.ItemsSource = textures.Keys;
+			texturesListBox.ItemsSource = Enum.GetValues(typeof(Element));
 			texturesListBox.SelectedItem = Element.Wall;
 			positionListBox.ItemsSource = Enum.GetValues(typeof(Position));
 			positionListBox.SelectedItem = Position.Full;
 		}
 
-		private void PrepareTextures()
-		{ 
-			foreach (Element e in Enum.GetValues(typeof (Element))){
-				Uri uri = new Uri(pathToTextures + e + ".bmp", UriKind.Relative);
-				var bitmap = new BitmapImage(uri);
-				textures.Add( e, bitmap);
-			}
-		}
-
 		private void texturesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			Element key = (Element) (sender as ListBox).SelectedItem;
+			Element element = (Element) (sender as ListBox).SelectedItem;
 
-			textureImage.Source = textures[key];
+			textureImage.Source = TexturesFactory.ReturnTextureOfElement(element);
 		}
 
 		private void positionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -132,7 +116,7 @@ namespace BattleCity
 					if (fields[i, j] != null)
 					{
 						var image = new Image();
-						image.Source = textures[fields[i, j].element];
+						image.Source = TexturesFactory.ReturnTextureOfElement(fields[i,j].element);
 						image.Margin = new Thickness(j * 32, i * 32, 0, 0);
 						image.Clip = TrimTexture(fields[i, j].position);
 						editorCanvas.Children.Add(image);

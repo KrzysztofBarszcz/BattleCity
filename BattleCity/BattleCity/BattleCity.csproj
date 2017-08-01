@@ -69,7 +69,9 @@
     </Compile>
     <Compile Include="Elements\Element.cs" />
     <Compile Include="Elements\Field.cs" />
+    <Compile Include="Elements\IDrawable.cs" />
     <Compile Include="Elements\Position.cs" />
+    <Compile Include="Elements\TexturesFactory.cs" />
     <Compile Include="LevelEditor.xaml.cs">
       <DependentUpon>LevelEditor.xaml</DependentUpon>
     </Compile>

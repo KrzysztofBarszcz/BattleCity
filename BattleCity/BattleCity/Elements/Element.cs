@@ -1,8 +1,11 @@
-﻿enum Element
+﻿namespace BattleCity.Elements
 {
-	Concrete,
-	Fast,
-	Tree,
-	Wall,
-	Water
+	enum Element
+	{
+		Concrete,
+		Fast,
+		Tree,
+		Wall,
+		Water
+	}
 }
