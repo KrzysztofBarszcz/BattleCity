@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using BattleCity.Elements;
 
 namespace BattleCity
@@ -12,7 +11,6 @@ namespace BattleCity
 	public partial class LevelEditor : Window
 	{
 		private Position position;
-		private Element element;
 		private Field[,] fields = new Field[13, 13];
 
 		public LevelEditor()
@@ -34,39 +32,7 @@ namespace BattleCity
 		private void positionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			position = (Position)(sender as ListBox).SelectedItem;
-			textureImage.Clip = TrimTexture(position);
-		}
-
-		private Geometry TrimTexture(Position position)
-		{
-			switch (position)
-			{
-				case Position.Full:
-					return null;
-				case Position.Left:
-					return CreateGeometry(0, 0, 16, 32);
-				case Position.Right:
-					return CreateGeometry(16, 0, 16, 32);
-				case Position.Up:
-					return CreateGeometry(0, 0, 32, 16);
-				case Position.Down:
-					return CreateGeometry(0, 16, 32, 16);
-				case Position.LeftDown:
-					return CreateGeometry(0, 16, 16, 16);
-				case Position.RightDown:
-					return CreateGeometry(16, 16, 16, 16);
-				case Position.LeftUp:
-					return CreateGeometry(0, 0, 16, 16);
-				case Position.RightUp:
-					return CreateGeometry(16, 0, 16, 16);
-				default:
-					return null;
-			}
-		}
-
-		private Geometry CreateGeometry(int x, int y, int width, int height)
-		{
-			return textureImage.Clip = new RectangleGeometry(new Rect(x, y, width, height));
+			textureImage.Clip = TexturesFactory.TrimTexture(position);
 		}
 
 		private void editorCanvas_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -115,11 +81,8 @@ namespace BattleCity
 				{
 					if (fields[i, j] != null)
 					{
-						var image = new Image();
-						image.Source = TexturesFactory.ReturnTextureOfElement(fields[i,j].element);
-						image.Margin = new Thickness(j * 32, i * 32, 0, 0);
-						image.Clip = TrimTexture(fields[i, j].position);
-						editorCanvas.Children.Add(image);
+						
+						editorCanvas.Children.Add(fields[i,j].draw());
 					}
 				}
 			}

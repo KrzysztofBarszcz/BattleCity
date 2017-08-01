@@ -1,8 +1,8 @@
 ﻿using System.Windows;
-
+using System.Windows.Controls;
 namespace BattleCity.Elements
 {
-	class Field
+	class Field : IDrawable
 	{
 		public Element element { get; }
 		public Position position { get; }
@@ -22,6 +22,15 @@ namespace BattleCity.Elements
 			int row = (int)point.Y / 32;
 			int column = (int)point.X / 32;
 			return new Field(element, position, row, column);
+		}
+
+		public Image draw()
+		{
+			var image = new Image();
+			image.Source = TexturesFactory.ReturnTextureOfElement(element);
+			image.Margin = new Thickness(column*32, row * 32, 0, 0);
+			image.Clip = TexturesFactory.TrimTexture(position);
+			return image;
 		}
 	}
 }
