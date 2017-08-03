@@ -5,18 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BattleCity"
         mc:Ignorable="d"
-        Title="Level editor"  Padding="5" HorizontalAlignment="Left" ResizeMode="NoResize" VerticalAlignment="Top" SizeToContent="WidthAndHeight" >
-	<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
+        Title="Level editor" HorizontalAlignment="Left" ResizeMode="NoResize" VerticalAlignment="Top" SizeToContent="WidthAndHeight" >
+	<StackPanel Orientation="Vertical">
+		<Menu Height="20" >
+			<MenuItem Header="File">
+				<MenuItem Header="Save"/>
+				<MenuItem Header="Load"/>
+				<Separator/>
+				<MenuItem Header="Quit"/>
+			</MenuItem>
+			<MenuItem Header="Help">
+				<MenuItem Header="About editor"/>
+			</MenuItem>
+		</Menu>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
 		<StackPanel Margin="5" Width="100" >
 			<Label x:Name="texturesLabel" Content="Textures:"/>
 			<ListBox x:Name="texturesListBox" SelectionChanged="texturesListBox_SelectionChanged" />
 			<Label x:Name="positionLabel" Content="Position:"/>
 			<ListBox x:Name="positionListBox" SelectionChanged="positionListBox_SelectionChanged" />
 			<Label x:Name="previewLabel" Content="Preview:"/>
-			<Image x:Name="textureImage" Width="32" Height="32"/>
-
-
+				<Image x:Name="textureImage" Width="32" Height="32"/>
+			</StackPanel>
+			<Canvas x:Name="editorCanvas" Grid.Column="1" Width="416" Height="416" Background="Black" MouseLeftButtonDown="editorCanvas_MouseLeftButtonDown"/>
 		</StackPanel>
-		<Canvas x:Name="editorCanvas" Grid.Column="1" Width="416" Height="416" Background="Black" MouseLeftButtonDown="editorCanvas_MouseLeftButtonDown"/>
 	</StackPanel>
 </Window>
