@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Runtime.Serialization;
 using BattleCity.Elements;
+using Microsoft.Win32;
 
 namespace BattleCity
 {
@@ -80,6 +83,30 @@ namespace BattleCity
 			{
 				editorCanvas.Children.Add(element.draw());
 			}
+		}
+
+		private void saveMenuItem_Click(object sender, RoutedEventArgs e)
+		{
+			String file = ChooseFileToSave();
+			SerializeFields(file);
+		}
+
+		private void SerializeFields(string file)
+		{
+			FileStream fileStream = new FileStream(file, FileMode.OpenOrCreate);
+
+			DataContractSerializer serializer = new DataContractSerializer(typeof(List<IDrawable>), new List<Type>{ typeof(Field)});
+			serializer.WriteObject(fileStream, elementsToDraw);
+			fileStream.Close();
+		}
+
+		private static String ChooseFileToSave()
+		{
+			SaveFileDialog saveFileDialog = new SaveFileDialog();
+			saveFileDialog.FileName = "level";
+			saveFileDialog.DefaultExt = "xml";
+			saveFileDialog.ShowDialog();
+			return saveFileDialog.FileName;
 		}
 	}
 }

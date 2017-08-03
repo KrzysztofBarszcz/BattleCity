@@ -1,13 +1,24 @@
-﻿using System.Windows;
+﻿using System.Runtime.Serialization;
+using System.Windows;
 using System.Windows.Controls;
 namespace BattleCity.Elements
 {
+	[DataContract]
 	class Field : IDrawable
 	{
-		public Element element { get; }
-		public Position position { get; }
-		public int row { get; }
-		public int column { get; }
+		[DataMember]
+		public Element element { get; protected set; }
+		[DataMember]
+		public Position position { get; protected set; }
+		[DataMember]
+		public int row { get; protected set; }
+		[DataMember]
+		public int column { get; protected set; }
+
+		private Field()
+		{
+
+		}
 
 		private Field(Element element, Position position, int row, int column)
 		{
