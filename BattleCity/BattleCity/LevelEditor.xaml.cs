@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using BattleCity.Elements;
@@ -11,7 +12,7 @@ namespace BattleCity
 	public partial class LevelEditor : Window
 	{
 		private Position position;
-		private Field[,] fields = new Field[13, 13];
+		private List<IDrawable>  elementsToDraw = new List<IDrawable>();
 
 		public LevelEditor()
 		{
@@ -42,7 +43,7 @@ namespace BattleCity
 			var field = Field.createFieldFromElementAndPosition(clickPosition, element, position);
 			if (!IsFieldForbidden(field))
 			{
-				fields[field.row, field.column] = field;
+				elementsToDraw.Add(field);
 			}
 			RedrawEditorScreen();
 		}
@@ -75,16 +76,9 @@ namespace BattleCity
 		private void RedrawEditorScreen()
 		{
 			editorCanvas.Children.Clear();
-			for (int i = 0; i < 13; i++)
+			foreach (var element in elementsToDraw)
 			{
-				for (int j = 0; j < 13; j++)
-				{
-					if (fields[i, j] != null)
-					{
-						
-						editorCanvas.Children.Add(fields[i,j].draw());
-					}
-				}
+				editorCanvas.Children.Add(element.draw());
 			}
 		}
 	}
