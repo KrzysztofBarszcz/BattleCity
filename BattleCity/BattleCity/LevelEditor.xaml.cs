@@ -87,26 +87,31 @@ namespace BattleCity
 
 		private void saveMenuItem_Click(object sender, RoutedEventArgs e)
 		{
-			String file = ChooseFileToSave();
-			SerializeFields(file);
+			SaveFileDialog saveFileDialog = PrepareSaveLevelDialog();
+			var result = saveFileDialog.ShowDialog();
+
+			if (result == true)
+			{
+				SerializeFields(saveFileDialog);
+			}
 		}
 
-		private void SerializeFields(string file)
-		{
-			FileStream fileStream = new FileStream(file, FileMode.OpenOrCreate);
-
-			DataContractSerializer serializer = new DataContractSerializer(typeof(List<Field>), new List<Type>{ typeof(Field)});
-			serializer.WriteObject(fileStream, elementsToDraw);
-			fileStream.Close();
-		}
-
-		private static String ChooseFileToSave()
+		private SaveFileDialog PrepareSaveLevelDialog()
 		{
 			SaveFileDialog saveFileDialog = new SaveFileDialog();
 			saveFileDialog.FileName = "level";
 			saveFileDialog.DefaultExt = "xml";
-			saveFileDialog.ShowDialog();
-			return saveFileDialog.FileName;
+			return saveFileDialog;
+		}
+
+		private void SerializeFields(SaveFileDialog saveFileDialog)
+		{
+			using (FileStream fileStream = new FileStream(saveFileDialog.FileName, FileMode.Create))
+			{
+				DataContractSerializer serializer = new DataContractSerializer(typeof(List<Field>), new List<Type> { typeof(Field) });
+				serializer.WriteObject(fileStream, elementsToDraw);
+				fileStream.Close();
+			}
 		}
 
 		private void loadMenuItem_Click(object sender, RoutedEventArgs e)
@@ -123,9 +128,12 @@ namespace BattleCity
 		private void DeserializeLevel(OpenFileDialog openFileDialog)
 		{
 			var file = openFileDialog.FileName;
-			FileStream fileStream = new FileStream(file, FileMode.Open);
-			var serializer = new DataContractSerializer(typeof(List<Field>), new List<Type> { typeof(Field) });
-			elementsToDraw = serializer.ReadObject(fileStream) as List<Field>;
+			using (FileStream fileStream = new FileStream(file, FileMode.Open))
+			{
+				var serializer = new DataContractSerializer(typeof(List<Field>), new List<Type> { typeof(Field) });
+				elementsToDraw = serializer.ReadObject(fileStream) as List<Field>;
+			}
+			RedrawEditorScreen();
 		}
 	}
 }
