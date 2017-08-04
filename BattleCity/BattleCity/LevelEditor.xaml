@@ -10,7 +10,7 @@
 		<Menu Height="20" >
 			<MenuItem Header="File">
 				<MenuItem x:Name="saveMenuItem" Header="Save" Click="saveMenuItem_Click"/>
-				<MenuItem Header="Load"/>
+				<MenuItem x:Name="loadMenuItem" Header="Load" Click="loadMenuItem_Click"/>
 				<Separator/>
 				<MenuItem Header="Quit"/>
 			</MenuItem>

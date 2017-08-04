@@ -15,7 +15,7 @@ namespace BattleCity
 	public partial class LevelEditor : Window
 	{
 		private Position position;
-		private List<IDrawable>  elementsToDraw = new List<IDrawable>();
+		private List<Field>  elementsToDraw = new List<Field>();
 
 		public LevelEditor()
 		{
@@ -95,7 +95,7 @@ namespace BattleCity
 		{
 			FileStream fileStream = new FileStream(file, FileMode.OpenOrCreate);
 
-			DataContractSerializer serializer = new DataContractSerializer(typeof(List<IDrawable>), new List<Type>{ typeof(Field)});
+			DataContractSerializer serializer = new DataContractSerializer(typeof(List<Field>), new List<Type>{ typeof(Field)});
 			serializer.WriteObject(fileStream, elementsToDraw);
 			fileStream.Close();
 		}
@@ -107,6 +107,25 @@ namespace BattleCity
 			saveFileDialog.DefaultExt = "xml";
 			saveFileDialog.ShowDialog();
 			return saveFileDialog.FileName;
+		}
+
+		private void loadMenuItem_Click(object sender, RoutedEventArgs e)
+		{
+			OpenFileDialog openFileDialog = new OpenFileDialog();
+			var result = openFileDialog.ShowDialog();
+
+			if (result == true)
+			{
+				DeserializeLevel(openFileDialog);
+			}
+		}
+
+		private void DeserializeLevel(OpenFileDialog openFileDialog)
+		{
+			var file = openFileDialog.FileName;
+			FileStream fileStream = new FileStream(file, FileMode.Open);
+			var serializer = new DataContractSerializer(typeof(List<Field>), new List<Type> { typeof(Field) });
+			elementsToDraw = serializer.ReadObject(fileStream) as List<Field>;
 		}
 	}
 }
