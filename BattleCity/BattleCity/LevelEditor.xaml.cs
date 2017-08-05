@@ -15,7 +15,7 @@ namespace BattleCity
 	public partial class LevelEditor : Window
 	{
 		private Position position;
-		private List<Field>  elementsToDraw = new List<Field>();
+		private List<DrawableElement> elementsToDraw = new List<DrawableElement>();
 
 		public LevelEditor()
 		{
@@ -24,6 +24,18 @@ namespace BattleCity
 			texturesListBox.SelectedItem = Element.Wall;
 			positionListBox.ItemsSource = Enum.GetValues(typeof(Position));
 			positionListBox.SelectedItem = Position.Full;
+
+			DrawDefaultEagleAndWall();
+		}
+
+		private void DrawDefaultEagleAndWall()
+		{
+			elementsToDraw.Add(Field.CreateFieldFromElementAndPosition(12, 5, Element.Wall, Position.Right));
+			elementsToDraw.Add(Field.CreateFieldFromElementAndPosition(12, 7, Element.Wall, Position.Left));
+			elementsToDraw.Add(Field.CreateFieldFromElementAndPosition(11, 6, Element.Wall, Position.Down));
+			elementsToDraw.Add(Field.CreateFieldFromElementAndPosition(11, 5, Element.Wall, Position.RightDown));
+			elementsToDraw.Add(Field.CreateFieldFromElementAndPosition(11, 7, Element.Wall, Position.LeftDown));
+			RedrawEditorScreen();
 		}
 
 		private void texturesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -43,7 +55,7 @@ namespace BattleCity
 		{
 			var clickPosition = e.GetPosition(sender as Canvas);
 			Element element = (Element)texturesListBox.SelectedItem;
-			var field = Field.createFieldFromElementAndPosition(clickPosition, element, position);
+			var field = Field.CreateFieldFromElementAndPosition(clickPosition, element, position);
 			if (!IsFieldForbidden(field))
 			{
 				elementsToDraw.Add(field);
@@ -83,6 +95,8 @@ namespace BattleCity
 			{
 				editorCanvas.Children.Add(element.draw());
 			}
+
+			editorCanvas.Children.Add(TexturesFactory.DrawEagle());
 		}
 
 		private void saveMenuItem_Click(object sender, RoutedEventArgs e)
@@ -108,7 +122,7 @@ namespace BattleCity
 		{
 			using (FileStream fileStream = new FileStream(saveFileDialog.FileName, FileMode.Create))
 			{
-				DataContractSerializer serializer = new DataContractSerializer(typeof(List<Field>), new List<Type> { typeof(Field) });
+				DataContractSerializer serializer = new DataContractSerializer(typeof(List<DrawableElement>), new List<Type> { typeof(Field) });
 				serializer.WriteObject(fileStream, elementsToDraw);
 				fileStream.Close();
 			}
@@ -130,8 +144,8 @@ namespace BattleCity
 			var file = openFileDialog.FileName;
 			using (FileStream fileStream = new FileStream(file, FileMode.Open))
 			{
-				var serializer = new DataContractSerializer(typeof(List<Field>), new List<Type> { typeof(Field) });
-				elementsToDraw = serializer.ReadObject(fileStream) as List<Field>;
+				var serializer = new DataContractSerializer(typeof(List<DrawableElement>), new List<Type> { typeof(Field) });
+				elementsToDraw = serializer.ReadObject(fileStream) as List<DrawableElement>;
 			}
 			RedrawEditorScreen();
 		}

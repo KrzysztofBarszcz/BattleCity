@@ -68,6 +68,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Elements\DrawableElement.cs" />
     <Compile Include="Elements\Element.cs" />
     <Compile Include="Elements\Field.cs" />
     <Compile Include="Elements\IDrawable.cs" />
@@ -127,9 +128,11 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\UniqueElements\eagle.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Images\UniqueElements\playerOne.bmp" />
+    <Resource Include="Images\UniqueElements\playerTwo.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\UniqueElements\Eagle.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

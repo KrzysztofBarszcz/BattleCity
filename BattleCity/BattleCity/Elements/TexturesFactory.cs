@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -8,26 +9,47 @@ namespace BattleCity.Elements
 {
 	static class TexturesFactory
 	{
-		private static String PATH_TO_ELEMENTS = "Images/LevelElements/";
-		private static Dictionary<Element, BitmapImage> elements = PrepareTextures();
+		private const String PATH_TO_ELEMENTS = "Images/LevelElements/";
+		private const String PATH_TO_UNIQUE_ELEMENTS = "Images/UniqueElements/";
+		private static Dictionary<Element, BitmapImage> elements = PrepareTextures<Element>(PATH_TO_ELEMENTS);
+		private static Dictionary<UniqueElement, BitmapImage> uniqueElements = PrepareTextures<UniqueElement>(PATH_TO_UNIQUE_ELEMENTS);
+
+		public enum UniqueElement{
+			Eagle,
+			PlayerOne,
+			PlayerTwo
+		}
 
 		public static BitmapImage ReturnTextureOfElement (Element element)
 		{
 			return elements[element];
 		}
 
-		private static Dictionary<Element, BitmapImage> PrepareTextures()
+		private static BitmapImage ReturnTextureOfUniqueElement(UniqueElement element)
 		{
-			var elementsDictionary = new Dictionary<Element, BitmapImage>();
-			foreach (Element e in Enum.GetValues(typeof(Element)))
-			{				
-				Uri uri = new Uri(PATH_TO_ELEMENTS + e + ".bmp", UriKind.Relative);
+			return uniqueElements[element];
+		}
+
+		public static Image DrawEagle()
+		{
+			var image = new Image();
+			image.Source = ReturnTextureOfUniqueElement(UniqueElement.Eagle);
+			image.Margin = new Thickness(6 * 32, 12 * 32, 0, 0);
+			return image;
+		}
+
+		private static Dictionary<T, BitmapImage> PrepareTextures<T>(String path)
+		{
+			var elementsDictionary = new Dictionary<T, BitmapImage>();
+			foreach (T element in Enum.GetValues(typeof(T)))
+			{
+				Uri uri = new Uri(path + element + ".bmp", UriKind.Relative);
 				var bitmap = new BitmapImage(uri);
-				elementsDictionary.Add(e, bitmap);
+				elementsDictionary.Add(element, bitmap);
 			}
 			return elementsDictionary;
 		}
-
+		
 		public static Geometry TrimTexture(Position position)
 		{
 			switch (position)

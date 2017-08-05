@@ -4,7 +4,7 @@ using System.Windows.Controls;
 namespace BattleCity.Elements
 {
 	[DataContract]
-	class Field : IDrawable
+	class Field : DrawableElement
 	{
 		[DataMember]
 		public Element element { get; protected set; }
@@ -28,14 +28,19 @@ namespace BattleCity.Elements
 			this.column = column;
 		}
 
-		public static Field createFieldFromElementAndPosition(Point point, Element element, Position position)
+		public static Field CreateFieldFromElementAndPosition(Point point, Element element, Position position)
 		{
 			int row = (int)point.Y / 32;
 			int column = (int)point.X / 32;
+			return CreateFieldFromElementAndPosition(row, column, element, position);
+		}
+		public static Field CreateFieldFromElementAndPosition(int row, int column, Element element, Position position)
+		{
 			return new Field(element, position, row, column);
+
 		}
 
-		public Image draw()
+		public override Image draw()
 		{
 			var image = new Image();
 			image.Source = TexturesFactory.ReturnTextureOfElement(element);
