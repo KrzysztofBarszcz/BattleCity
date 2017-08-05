@@ -149,5 +149,12 @@ namespace BattleCity
 			}
 			RedrawEditorScreen();
 		}
+
+		private void quitMenuItem_Click(object sender, RoutedEventArgs e)
+		{
+			var window = new MainWindow();
+			window.Show();
+			Close();
+		}
 	}
 }
