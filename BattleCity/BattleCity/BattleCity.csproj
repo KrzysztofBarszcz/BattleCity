@@ -134,5 +134,8 @@
   <ItemGroup>
     <Resource Include="Images\UniqueElements\Eagle.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="level1.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
