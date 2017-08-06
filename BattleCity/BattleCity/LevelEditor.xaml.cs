@@ -169,8 +169,8 @@ namespace BattleCity
 
 		private void quitMenuItem_Click(object sender, RoutedEventArgs e)
 		{
-			var window = new MainWindow();
-			window.Show();
+			StateMachine machine = StateMachine.GetInstance();
+			machine.MoveFromEditorToMainScreen();
 			Close();
 		}
 	}
