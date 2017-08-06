@@ -26,7 +26,8 @@ namespace BattleCity
 		private Image background = new Image();
 		private Image pointer = new Image();
 
-		private List<DrawableElement> elements; 
+		private List<DrawableElement> elements;
+		private DrawableElement[,] fields = new Field[13,13];
 
 		private StateMachine(MainWindow window) {
 			background.Source = new BitmapImage(new Uri("Images/startScreen.bmp", UriKind.Relative));
@@ -130,6 +131,17 @@ namespace BattleCity
 		public void LoadLevel()
 		{
 			elements = LevelSerializer.GetInstance().DeserializeLevel(PATH_TO_LEVEL + "level" + level + ".xml");
+			fields = new Field[13, 13];
+			mainCanvas.Children.Clear();
+			foreach (var e in elements)
+			{
+				var field = e as Field;
+				if (field != null) {
+					fields[field.column, field.row] = field;
+				}
+				mainCanvas.Children.Add(field.draw());
+				mainCanvas.Children.Add(TexturesFactory.DrawEagle());
+			}
 		}
 
 		public void MoveFromEditorToMainScreen()
