@@ -28,8 +28,8 @@ namespace BattleCity
 		{
 			mainCanvas.Children.Add(background);
 			Thickness margin = pointer.Margin;
-			margin.Top = 264;
-			margin.Left = 130;
+			margin.Top = 250;
+			margin.Left = 100;
 			pointer.Margin = margin;
 			mainCanvas.Children.Add(pointer);
 		}
@@ -39,11 +39,11 @@ namespace BattleCity
 			InitializeMainScreen();
 		}
 
-		private void mainWindow_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+		private void mainWindow_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.Down)
 			{
-				if (pointer.Margin.Top < 328)
+				if (pointer.Margin.Top < 314)
 				{
 					MoveDown(32);
 					selectedOption = selectedOption == Options.ONE_PLAYER ? Options.TWO_PLAYERS : Options.EDITOR;
@@ -51,7 +51,7 @@ namespace BattleCity
 			}
 			if (e.Key == Key.Up)
 			{
-				if (pointer.Margin.Top > 264)
+				if (pointer.Margin.Top > 250)
 				{
 					MoveDown(-32);
 					selectedOption = selectedOption == Options.EDITOR ? Options.TWO_PLAYERS : Options.ONE_PLAYER;
@@ -79,7 +79,7 @@ namespace BattleCity
 			mainCanvas.Children.Clear();
 			mainCanvas.Children.Add(background);
 			Thickness margin = pointer.Margin;
-			pointer.Margin = new Thickness(130, margin.Top + pixels, 0, 0);
+			pointer.Margin = new Thickness(100, margin.Top + pixels, 0, 0);
 			mainCanvas.Children.Add(pointer);
 		}
 	}
