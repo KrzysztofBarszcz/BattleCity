@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using BattleCity.Elements;
+using BattleCity.Helpers;
 
 namespace BattleCity
 {
@@ -11,14 +14,19 @@ namespace BattleCity
 		enum State { MainScreen, LevelEditor, Level }
 		enum Options { ONE_PLAYER, TWO_PLAYERS, EDITOR }
 
+		private const String PATH_TO_LEVEL = "Levels/";
 		private static StateMachine instance;
 		private Options selectedOption = Options.ONE_PLAYER;
 		private State currentState = State.MainScreen;
 		private MainWindow window;
 		private Canvas mainCanvas;
 
+		private int level = -1;
+
 		private Image background = new Image();
 		private Image pointer = new Image();
+
+		private List<DrawableElement> elements; 
 
 		private StateMachine(MainWindow window) {
 			background.Source = new BitmapImage(new Uri("Images/startScreen.bmp", UriKind.Relative));
@@ -88,8 +96,12 @@ namespace BattleCity
 				switch (selectedOption)
 				{
 					case Options.ONE_PLAYER:
+						level = 1;
+						LoadLevel();
 						break;
 					case Options.TWO_PLAYERS:
+						level = 1;
+						LoadLevel();
 						break;
 					case Options.EDITOR:
 						var levelEditor = new LevelEditor();
@@ -113,6 +125,11 @@ namespace BattleCity
 			Thickness margin = pointer.Margin;
 			pointer.Margin = new Thickness(100, margin.Top + pixels, 0, 0);
 			mainCanvas.Children.Add(pointer);
+		}
+
+		public void LoadLevel()
+		{
+			elements = LevelSerializer.GetInstance().DeserializeLevel(PATH_TO_LEVEL + "level" + level + ".xml");
 		}
 
 		public void MoveFromEditorToMainScreen()

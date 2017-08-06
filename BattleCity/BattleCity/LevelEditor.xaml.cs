@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Runtime.Serialization;
 using BattleCity.Elements;
 using Microsoft.Win32;
+using BattleCity.Helpers;
 
 namespace BattleCity
 {
@@ -123,7 +122,7 @@ namespace BattleCity
 
 			if (result == true)
 			{
-				SerializeFields(saveFileDialog);
+				SerializeFields(saveFileDialog.FileName);
 			}
 		}
 
@@ -135,14 +134,9 @@ namespace BattleCity
 			return saveFileDialog;
 		}
 
-		private void SerializeFields(SaveFileDialog saveFileDialog)
+		private void SerializeFields(String path)
 		{
-			using (FileStream fileStream = new FileStream(saveFileDialog.FileName, FileMode.Create))
-			{
-				DataContractSerializer serializer = new DataContractSerializer(typeof(List<DrawableElement>), new List<Type> { typeof(Field) });
-				serializer.WriteObject(fileStream, elementsToDraw);
-				fileStream.Close();
-			}
+			LevelSerializer.GetInstance().SerializeLevel(path, elementsToDraw);
 		}
 
 		private void loadMenuItem_Click(object sender, RoutedEventArgs e)
@@ -152,18 +146,13 @@ namespace BattleCity
 
 			if (result == true)
 			{
-				DeserializeLevel(openFileDialog);
+				DeserializeLevel(openFileDialog.FileName);
 			}
 		}
 
-		private void DeserializeLevel(OpenFileDialog openFileDialog)
+		private void DeserializeLevel(String path)
 		{
-			var file = openFileDialog.FileName;
-			using (FileStream fileStream = new FileStream(file, FileMode.Open))
-			{
-				var serializer = new DataContractSerializer(typeof(List<DrawableElement>), new List<Type> { typeof(Field) });
-				elementsToDraw = serializer.ReadObject(fileStream) as List<DrawableElement>;
-			}
+			elementsToDraw = LevelSerializer.GetInstance().DeserializeLevel(path);
 			RedrawEditorScreen();
 		}
 
