@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using BattleCity.Elements;
+using BattleCity.Elements.Tanks;
 using BattleCity.Helpers;
 
 namespace BattleCity
@@ -28,6 +29,9 @@ namespace BattleCity
 
 		private List<DrawableElement> elements;
 		private DrawableElement[,] fields = new Field[13,13];
+
+		private PlayerTank playerOneTank;
+		private PlayerTank playerTwoTank;
 
 		private StateMachine(MainWindow window) {
 			background.Source = new BitmapImage(new Uri("Images/startScreen.bmp", UriKind.Relative));
@@ -98,10 +102,15 @@ namespace BattleCity
 				{
 					case Options.ONE_PLAYER:
 						level = 1;
+						playerOneTank = TankFactory.CreatePlayerOneTank();
+						currentState = State.Level;
 						LoadLevel();
 						break;
 					case Options.TWO_PLAYERS:
 						level = 1;
+						playerOneTank = TankFactory.CreatePlayerOneTank();
+						playerTwoTank = TankFactory.CreatePlayerTwoTank();
+						currentState = State.Level;
 						LoadLevel();
 						break;
 					case Options.EDITOR:
@@ -139,8 +148,13 @@ namespace BattleCity
 				if (field != null) {
 					fields[field.column, field.row] = field;
 				}
-				mainCanvas.Children.Add(field.draw());
-				mainCanvas.Children.Add(TexturesFactory.DrawEagle());
+				mainCanvas.Children.Add(field.Draw());
+			}
+			mainCanvas.Children.Add(TexturesFactory.DrawEagle());
+			mainCanvas.Children.Add(playerOneTank.Draw());
+			if(selectedOption == Options.TWO_PLAYERS)
+			{
+				mainCanvas.Children.Add(playerTwoTank.Draw());
 			}
 		}
 

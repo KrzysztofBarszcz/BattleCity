@@ -109,7 +109,7 @@ namespace BattleCity
 			editorCanvas.Children.Clear();
 			foreach (var element in elementsToDraw)
 			{
-				editorCanvas.Children.Add(element.draw());
+				editorCanvas.Children.Add(element.Draw());
 			}
 
 			editorCanvas.Children.Add(TexturesFactory.DrawEagle());

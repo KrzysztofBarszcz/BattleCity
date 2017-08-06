@@ -40,7 +40,7 @@ namespace BattleCity.Elements
 
 		}
 
-		public override Image draw()
+		public override Image Draw()
 		{
 			var image = new Image();
 			image.Source = TexturesFactory.ReturnTextureOfElement(element);

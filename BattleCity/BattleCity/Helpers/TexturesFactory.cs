@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using BattleCity.Elements.Tanks;
 
 namespace BattleCity.Elements
 {
@@ -25,7 +26,7 @@ namespace BattleCity.Elements
 			return elements[element];
 		}
 
-		private static BitmapImage ReturnTextureOfUniqueElement(UniqueElement element)
+		public static BitmapImage ReturnTextureOfUniqueElement(UniqueElement element)
 		{
 			return uniqueElements[element];
 		}

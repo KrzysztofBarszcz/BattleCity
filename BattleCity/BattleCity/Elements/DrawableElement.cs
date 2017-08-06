@@ -6,6 +6,6 @@ namespace BattleCity.Elements
 	[DataContract]
 	public abstract class DrawableElement : IDrawable
 	{
-		public abstract Image draw();
+		public abstract Image Draw();
 	}
 }
