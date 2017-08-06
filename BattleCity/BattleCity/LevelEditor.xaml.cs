@@ -56,11 +56,28 @@ namespace BattleCity
 			var clickPosition = e.GetPosition(sender as Canvas);
 			Element element = (Element)texturesListBox.SelectedItem;
 			var field = Field.CreateFieldFromElementAndPosition(clickPosition, element, position);
+			int column = (int)(clickPosition.X) / 32;
+			int row = (int)(clickPosition.Y) / 32;
 			if (!IsFieldForbidden(field))
 			{
+				RemoveElementsAtClickedPosition(field);
+
 				elementsToDraw.Add(field);
 			}
 			RedrawEditorScreen();
+		}
+
+		private void RemoveElementsAtClickedPosition(Field field)
+		{
+			elementsToDraw.RemoveAll(item =>
+			{
+				var itemField = item as Field;
+				if (itemField != null && itemField.row == field.row && itemField.column == field.column)
+				{
+					return true;
+				}
+				return false;
+			});
 		}
 
 		private bool IsFieldForbidden(Field field)
