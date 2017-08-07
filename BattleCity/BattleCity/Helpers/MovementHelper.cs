@@ -19,36 +19,34 @@ namespace BattleCity.Helpers
 		{
 			double delta = (double)tank.Clock.ElapsedMilliseconds / 1000;
 			tank.Clock.Restart();
-			switch (tank.Direction)
+			bool collision = Collision(tank);
+
+			if (!collision)
 			{
-				case Direction.Up:
-					tank.PositionX = Trim(tank.PositionX);
-					if (!Collision(tank))
-					{
+				switch (tank.Direction)
+				{
+					case Direction.Up:
+						tank.PositionX = Trim(tank.PositionX);
 						tank.PositionY -= delta * tank.Speed;
-					}
-					break;
-				case Direction.Down:
-					tank.PositionX = Trim(tank.PositionX);
-					if (!Collision(tank))
-					{
+						break;
+					case Direction.Down:
+						tank.PositionX = Trim(tank.PositionX);
 						tank.PositionY += delta * tank.Speed;
-					}
-					break;
-				case Direction.Left:
-					tank.PositionY = Trim(tank.PositionY);
-					if (!Collision(tank))
-					{
+						break;
+					case Direction.Left:
+						tank.PositionY = Trim(tank.PositionY);
 						tank.PositionX -= delta * tank.Speed;
-					}
-					break;
-				case Direction.Right:
-					tank.PositionY = Trim(tank.PositionY);
-					if (!Collision(tank))
-					{
+						break;
+					case Direction.Right:
+						tank.PositionY = Trim(tank.PositionY);
 						tank.PositionX += delta * tank.Speed;
-					}
-					break;
+						break;
+				}
+			}
+			else
+			{
+				tank.PositionX = Trim(tank.PositionX);
+				tank.PositionY = Trim(tank.PositionY);
 			}
 			BoundaryCollision(tank);
 		}
@@ -79,37 +77,69 @@ namespace BattleCity.Helpers
 
 		private bool Collision(AbstractTank tank)
 		{
-			int tankRow = (int)Math.Round((tank.PositionY - 16) / 32);
-			int tankColumn = (int)Math.Round((tank.PositionX - 16) / 32);
-			switch (tank.Direction)
+			int tankRow = (int)(tank.PositionY) / 32;
+			int tankColumn = (int)(tank.PositionX) / 32;
+
+			if(tank.Direction == Direction.Up || tank.Direction == Direction.Down)
 			{
-				case Direction.Up:
-					if (tankRow > 0 && levelElements[tankRow - 1, tankColumn] != null && tank.PositionY <= tankRow * 32 + 16)
+				bool halfColumn = Trim(tank.PositionY) % 2 == 0;
+				for (int i = 0; i < 13; i++)
 					{
-						return true;
-					}
-					else return false;
-				case Direction.Down:
-					if (tankRow < 12 && levelElements[tankRow + 1, tankColumn] != null && tank.PositionY >= tankRow * 32 + 16)
-					{
-						return true;
-					}
-					else return false;
-				case Direction.Left:
-					if (tankColumn > 0 && levelElements[tankRow, tankColumn - 1] != null && tank.PositionX <= tankColumn * 32 + 16)
-					{
-						return true;
-					}
-					else return false;
-				case Direction.Right:
-					if (tankColumn < 12 && levelElements[tankRow, tankColumn + 1] != null && tank.PositionX >= tankColumn * 32 + 1)
-					{
-						return true;
-					}
-					else return false;
-				default: return false;
+						if (CheckCollision(tank, levelElements[i, tankColumn]))
+							return true;
+				}
 			}
+			if(tank.Direction == Direction.Left || tank.Direction == Direction.Right)
+			{
+				for(int i = 0; i < 13; i++)
+				{
+					if (CheckCollision(tank, levelElements[tankRow, i]))
+					{
+						return true;
+					}
+				}
+			}
+			return false;
 		}
+
+		private bool CheckCollision(AbstractTank tank, Field field)
+		{
+			if (field == null)
+				return false;
+			int up = ReturnValueFromState(field, Direction.Up);
+			int down = ReturnValueFromState(field, Direction.Down);
+			int left = ReturnValueFromState(field, Direction.Left);
+			int right = ReturnValueFromState(field, Direction.Right);
+			
+			if (tank.Direction == Direction.Up && Math.Abs(tank.PositionY - (field.row * 32 + 16 - down)) < 32
+				&& tank.PositionY > field.row * 32 + 16)
+			{
+				return true;
+			}
+			else if (tank.Direction == Direction.Down && Math.Abs(tank.PositionY - (field.row * 32 + 16 + up)) < 32
+				&& tank.PositionY < field.row*32+16)
+			{
+				return true;
+			}
+			else if (tank.Direction == Direction.Left && Math.Abs(tank.PositionX - (field.column*32 + 16 - right))<32
+				&& tank.PositionX > (field.column * 32 + 16))
+			{
+				return true;
+			}
+			else if( tank.Direction == Direction.Right && Math.Abs(tank.PositionX - (field.column*32 +16 + left)) < 32
+				&& tank.PositionX < (field.column * 32 + 16))
+			{
+				return true;
+			}
+			return false;
+		}
+
+		private int ReturnValueFromState(Field field, Direction direction)
+		{
+			if (field != null)
+				return field.state[direction] <= 2 ? 16 : 0;
+			else return 0;
+		} 
 
 		private void BoundaryCollision(AbstractTank tank)
 		{
