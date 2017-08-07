@@ -62,7 +62,6 @@
     <Compile Include="Elements\Tanks\TankFactory.cs" />
     <Compile Include="Helpers\LevelSerializer.cs" />
     <Compile Include="Helpers\MovementHelper.cs" />
-    <Compile Include="Helpers\MovementHelper2.cs" />
     <Compile Include="StateMachine.cs" />
     <Page Include="LevelEditor.xaml">
       <SubType>Designer</SubType>
@@ -143,8 +142,20 @@
     <Resource Include="Images\UniqueElements\Eagle.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Levels\level1.xml" />
+    <Resource Include="Levels\level1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Levels\level10.xml" />
+    <Resource Include="Levels\level2.xml" />
+    <Resource Include="Levels\level3.xml" />
+    <Resource Include="Levels\level4.xml" />
+    <Resource Include="Levels\level5.xml" />
+    <Resource Include="Levels\level6.xml" />
+    <Resource Include="Levels\level7.xml" />
+    <Resource Include="Levels\level8.xml" />
+    <Resource Include="Levels\level9.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
