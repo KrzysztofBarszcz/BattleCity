@@ -1,0 +1,39 @@
+link to the film:https://youtu.be/dZqIwuqmFAs
+
+Technology: WPF
+.Net version:
+VS 17 Community Edition
+
+File structure:
+Elements:
+	Tanks:
+		AbstractTank - base class for tanks
+		PlayerTank - class for player tank
+		TankFactory - factory for tanks(currently only player one is visible
+	Direction - enum containing direction
+	DrawableElement - base class for field
+	Field - element of level
+	IDrawable - interface containing Draw() method, implemented by AbstractTank and field
+	Position - position of field
+	Helpers:
+		LevelSerializer - class responsible for saving and loading levels from xml
+		MovementHelper - class responsible for movement, collisions etc/
+		TexturesFactory - managing bitmaps
+	Images:
+		LevelElements - fields
+		UniqueElements - player tanks and eagle
+	Levels - levels in xml
+	StateMachine - class responible for moving between levels 
+	MainWindow - main window class 
+
+Things worthy to use:
+2 Inheritance e.g. AbstractTank->PlayerTank
+3 Polymorphism e.g. Draw() Method from IDrawable and SetState() from Field class
+4 Described
+5 Hermetization - visible in code ;)
+6 Interfaces - IDrawable
+7 Lambda - Somewhere, to late to search
+9 Code division - exists
+
+Playable version:
+look in Release folder
