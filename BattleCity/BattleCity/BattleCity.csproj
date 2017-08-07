@@ -56,10 +56,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Elements\Direction.cs" />
     <Compile Include="Elements\Tanks\AbstractTank.cs" />
     <Compile Include="Elements\Tanks\PlayerTank.cs" />
     <Compile Include="Elements\Tanks\TankFactory.cs" />
     <Compile Include="Helpers\LevelSerializer.cs" />
+    <Compile Include="Helpers\MovementHelper.cs" />
     <Compile Include="StateMachine.cs" />
     <Page Include="LevelEditor.xaml">
       <SubType>Designer</SubType>

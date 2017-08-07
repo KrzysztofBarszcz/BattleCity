@@ -29,5 +29,10 @@ namespace BattleCity
 		{
 			stateMachine.Move(e);
 		}
+
+		private void mainWindow_KeyUp(object sender, KeyEventArgs e)
+		{
+			stateMachine.Stop(e);
+		}
 	}
 }

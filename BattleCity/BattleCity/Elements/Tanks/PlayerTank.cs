@@ -8,5 +8,11 @@ namespace BattleCity.Elements.Tanks
 			base(positionY, positionX, speed, resistance, image)
 		{
 		}
+
+		public void StopTank()
+		{
+			IsMoving = false;
+			Clock.Stop();
+		}
 	}
 }
