@@ -39,6 +39,7 @@ namespace BattleCity.Helpers
 					tank.PositionY = Trim(tank.PositionY);
 					break;
 			}
+			BoundaryCollision(tank);
 		}
 
 		private int Trim(double position)
@@ -62,6 +63,26 @@ namespace BattleCity.Helpers
 					return new RotateTransform(90, 16, 16);
 				default:
 					return null;
+			}
+		}
+
+		private void BoundaryCollision(AbstractTank tank)
+		{
+			if (tank.PositionX < 16)
+			{
+				tank.PositionX = 16;
+			}
+			else if (tank.PositionX > 400)
+			{
+				tank.PositionX = 400;
+			}
+			if (tank.PositionY < 16)
+			{
+				tank.PositionY = 16;
+			}
+			else if (tank.PositionY > 400)
+			{
+				tank.PositionY = 400;
 			}
 		}
 	}
