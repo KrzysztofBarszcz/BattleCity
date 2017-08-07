@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -59,12 +58,6 @@ namespace BattleCity.Elements.Tanks
 					return null;
 			}
 		}
-		public void Move(Direction direction)
-		{
-			Direction = direction;
-			if(!Clock.IsRunning)
-				Clock.Start();
-		}
 
 		private void Move()
 		{
@@ -74,17 +67,28 @@ namespace BattleCity.Elements.Tanks
 			{
 				case Direction.Up:
 					PositionY -= delta * Speed;
+					PositionX = Trim(PositionX);
 					break;
 				case Direction.Down:
 					PositionY += delta * Speed;
+					PositionX = Trim(PositionX);
 					break;
 				case Direction.Left:
 					PositionX -= delta * Speed;
+					PositionY = Trim(PositionY);
 					break;
 				case Direction.Right:
 					PositionX += delta * Speed;
+					PositionY = Trim(PositionY);
 					break;
 			}
+		}
+
+		private int Trim(double position)
+		{
+			if (position % 16 >= 8)
+				return ((int)position / 16 + 1) * 16;
+			else return (int)position / 16 * 16;
 		}
 	}
 }

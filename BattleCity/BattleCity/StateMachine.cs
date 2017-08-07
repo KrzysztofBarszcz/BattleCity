@@ -10,7 +10,6 @@ using System.Windows.Media.Imaging;
 using BattleCity.Elements;
 using BattleCity.Elements.Tanks;
 using BattleCity.Helpers;
-using static BattleCity.Elements.Tanks.AbstractTank;
 
 namespace BattleCity
 {
@@ -24,7 +23,6 @@ namespace BattleCity
 		private Options selectedOption = Options.ONE_PLAYER;
 		private State currentState = State.MainScreen;
 		private MainWindow window;
-
 		private Canvas mainCanvas;
 
 		private int level = -1;
