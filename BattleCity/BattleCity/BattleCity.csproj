@@ -56,7 +56,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Elements\Direction.cs" />
+    <Compile Include="Elements\Tanks\AbstractTank.cs" />
+    <Compile Include="Elements\Tanks\PlayerTank.cs" />
+    <Compile Include="Elements\Tanks\TankFactory.cs" />
     <Compile Include="Helpers\LevelSerializer.cs" />
+    <Compile Include="Helpers\MovementHelper.cs" />
+    <Compile Include="Helpers\MovementHelper2.cs" />
     <Compile Include="StateMachine.cs" />
     <Page Include="LevelEditor.xaml">
       <SubType>Designer</SubType>
@@ -139,5 +145,6 @@
   <ItemGroup>
     <Resource Include="Levels\level1.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

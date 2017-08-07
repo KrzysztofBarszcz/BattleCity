@@ -4,6 +4,6 @@ namespace BattleCity.Elements
 {
 	interface IDrawable
 	{
-		Image draw();
+		Image Draw();
 	}
 }

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Battle City" Loaded="mainWindow_Loaded" KeyDown="mainWindow_KeyDown" VerticalAlignment="Top" SizeToContent="WidthAndHeight" ResizeMode="NoResize" >
+        Title="Battle City" Loaded="mainWindow_Loaded" KeyDown="mainWindow_KeyDown" VerticalAlignment="Top" SizeToContent="WidthAndHeight" ResizeMode="NoResize" KeyUp="mainWindow_KeyUp" >
 	<StackPanel Orientation="Horizontal" Margin="5">
 		<Canvas x:Name="mainCanvas" Width="416" Height="416" Background="Black"/>
 		<StackPanel x:Name="playerOneLifesTextBox" Width="100" Orientation="Vertical">

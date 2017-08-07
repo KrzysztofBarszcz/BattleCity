@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using BattleCity.Elements;
+using BattleCity.Elements.Tanks;
 using BattleCity.Helpers;
 
 namespace BattleCity
@@ -27,7 +31,10 @@ namespace BattleCity
 		private Image pointer = new Image();
 
 		private List<DrawableElement> elements;
-		private DrawableElement[,] fields = new Field[13,13];
+		private Field[,] fields = new Field[13,13];
+
+		private PlayerTank playerOneTank;
+		private PlayerTank playerTwoTank;
 
 		private StateMachine(MainWindow window) {
 			background.Source = new BitmapImage(new Uri("Images/startScreen.bmp", UriKind.Relative));
@@ -57,7 +64,9 @@ namespace BattleCity
 				case State.MainScreen:
 					DrawMainScreen(250);
 					break;
-					
+				case State.Level:
+					DrawLevelScreen();
+					break;
 			}
 		}
 
@@ -68,13 +77,36 @@ namespace BattleCity
 				case State.MainScreen:
 					MovementOnMainScreen(e);
 					break;
-				default:
+				case State.Level:
+					MovementOnLevelScreen(e);
 					break;
 			}
 		}
 
+		internal void Stop(KeyEventArgs e)
+		{
+			if (currentState == State.Level)
+			{
+				if (e.Key == Key.Up)
+				{
+					playerOneTank.StopTank();
+				}
+				else if (e.Key == Key.Down)
+				{
+					playerOneTank.StopTank();
+				}
+				else if (e.Key == Key.Left)
+				{
+					playerOneTank.StopTank();
+				}
+				else if (e.Key == Key.Right)
+				{
+					playerOneTank.StopTank();
+				}
+			}
+		}
 
-		public void MovementOnMainScreen(KeyEventArgs e)
+		private void MovementOnMainScreen(KeyEventArgs e)
 		{
 			if (e.Key == Key.Down)
 			{
@@ -98,11 +130,18 @@ namespace BattleCity
 				{
 					case Options.ONE_PLAYER:
 						level = 1;
+						playerOneTank = TankFactory.CreatePlayerOneTank();
+						currentState = State.Level;
 						LoadLevel();
+						LevelLoop();
 						break;
 					case Options.TWO_PLAYERS:
 						level = 1;
+						playerOneTank = TankFactory.CreatePlayerOneTank();
+						playerTwoTank = TankFactory.CreatePlayerTwoTank();
+						currentState = State.Level;
 						LoadLevel();
+						LevelLoop();
 						break;
 					case Options.EDITOR:
 						var levelEditor = new LevelEditor();
@@ -112,6 +151,24 @@ namespace BattleCity
 						break;
 				}
 			}
+		}
+
+		private void LevelLoop()
+		{
+			Task.Run(() =>
+			{
+				while (currentState == State.Level)
+				{
+					Stopwatch w = new Stopwatch();
+					w.Start();
+					window.Dispatcher.Invoke(() => DrawScreen());
+					w.Stop();
+					TimeSpan ts = w.Elapsed;
+					int restOfFrameLength = 40 - (int)w.ElapsedMilliseconds;
+					if(restOfFrameLength > 0)
+					Thread.Sleep(restOfFrameLength);
+				}
+			});
 		}
 
 		private void MoveDown(int pixels)
@@ -128,20 +185,64 @@ namespace BattleCity
 			mainCanvas.Children.Add(pointer);
 		}
 
+		private void MovementOnLevelScreen(KeyEventArgs e)
+		{
+			if(e.Key == Key.Up)
+			{
+				playerOneTank.IsMoving = true;
+				playerOneTank.Direction = Direction.Up;
+			}
+			else if(e.Key == Key.Down)
+			{
+				playerOneTank.IsMoving = true;
+				playerOneTank.Direction = Direction.Down;
+			}
+			else if(e.Key == Key.Left)
+			{
+				playerOneTank.IsMoving = true;
+				playerOneTank.Direction = Direction.Left;
+			}
+			else if(e.Key == Key.Right)
+			{
+				playerOneTank.IsMoving = true;
+				playerOneTank.Direction = Direction.Right;
+			}
+		}
+
+		private void DrawLevelScreen()
+		{
+			mainCanvas.Children.Clear();
+			foreach (var e in elements)
+			{
+				var field = e as Field;
+				if (field != null)
+				{
+					mainCanvas.Children.Add(field.Draw());
+				}
+			}
+			mainCanvas.Children.Add(TexturesFactory.DrawEagle());
+			mainCanvas.Children.Add(playerOneTank.Draw());
+			if (selectedOption == Options.TWO_PLAYERS)
+			{
+				mainCanvas.Children.Add(playerTwoTank.Draw());
+			}
+		}
+
 		public void LoadLevel()
 		{
 			elements = LevelSerializer.GetInstance().DeserializeLevel(PATH_TO_LEVEL + "level" + level + ".xml");
 			fields = new Field[13, 13];
 			mainCanvas.Children.Clear();
+
 			foreach (var e in elements)
 			{
 				var field = e as Field;
 				if (field != null) {
-					fields[field.column, field.row] = field;
+					fields[field.row, field.column] = field;
+					field.SetState();
 				}
-				mainCanvas.Children.Add(field.draw());
-				mainCanvas.Children.Add(TexturesFactory.DrawEagle());
 			}
+			MovementHelper.GetInstance().levelElements = fields;
 		}
 
 		public void MoveFromEditorToMainScreen()
