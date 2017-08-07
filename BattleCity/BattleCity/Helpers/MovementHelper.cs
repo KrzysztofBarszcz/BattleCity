@@ -1,18 +1,17 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Windows.Media;
+using BattleCity.Elements;
 using BattleCity.Elements.Tanks;
 
 namespace BattleCity.Helpers
 {
 	class MovementHelper
 	{
-		private static MovementHelper instance;
+		private static MovementHelper instance = new MovementHelper();
+		public Field[,] levelElements { get; set; }
 
 		public static MovementHelper GetInstance()
 		{
-			if (instance == null)
-			{
-				instance = new MovementHelper();
-			}
 			return instance;
 		}
 
@@ -23,20 +22,32 @@ namespace BattleCity.Helpers
 			switch (tank.Direction)
 			{
 				case Direction.Up:
-					tank.PositionY -= delta * tank.Speed;
 					tank.PositionX = Trim(tank.PositionX);
+					if (!Collision(tank))
+					{
+						tank.PositionY -= delta * tank.Speed;
+					}
 					break;
 				case Direction.Down:
-					tank.PositionY += delta * tank.Speed;
 					tank.PositionX = Trim(tank.PositionX);
+					if (!Collision(tank))
+					{
+						tank.PositionY += delta * tank.Speed;
+					}
 					break;
 				case Direction.Left:
-					tank.PositionX -= delta * tank.Speed;
 					tank.PositionY = Trim(tank.PositionY);
+					if (!Collision(tank))
+					{
+						tank.PositionX -= delta * tank.Speed;
+					}
 					break;
 				case Direction.Right:
-					tank.PositionX += delta * tank.Speed;
 					tank.PositionY = Trim(tank.PositionY);
+					if (!Collision(tank))
+					{
+						tank.PositionX += delta * tank.Speed;
+					}
 					break;
 			}
 			BoundaryCollision(tank);
@@ -63,6 +74,40 @@ namespace BattleCity.Helpers
 					return new RotateTransform(90, 16, 16);
 				default:
 					return null;
+			}
+		}
+
+		private bool Collision(AbstractTank tank)
+		{
+			int tankRow = (int)Math.Round((tank.PositionY - 16) / 32);
+			int tankColumn = (int)Math.Round((tank.PositionX - 16) / 32);
+			switch (tank.Direction)
+			{
+				case Direction.Up:
+					if (tankRow > 0 && levelElements[tankRow - 1, tankColumn] != null && tank.PositionY <= tankRow * 32 + 16)
+					{
+						return true;
+					}
+					else return false;
+				case Direction.Down:
+					if (tankRow < 12 && levelElements[tankRow + 1, tankColumn] != null && tank.PositionY >= tankRow * 32 + 16)
+					{
+						return true;
+					}
+					else return false;
+				case Direction.Left:
+					if (tankColumn > 0 && levelElements[tankRow, tankColumn - 1] != null && tank.PositionX <= tankColumn * 32 + 16)
+					{
+						return true;
+					}
+					else return false;
+				case Direction.Right:
+					if (tankColumn < 12 && levelElements[tankRow, tankColumn + 1] != null && tank.PositionX >= tankColumn * 32 + 1)
+					{
+						return true;
+					}
+					else return false;
+				default: return false;
 			}
 		}
 

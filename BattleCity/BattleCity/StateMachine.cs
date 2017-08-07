@@ -31,7 +31,7 @@ namespace BattleCity
 		private Image pointer = new Image();
 
 		private List<DrawableElement> elements;
-		private DrawableElement[,] fields = new Field[13,13];
+		private Field[,] fields = new Field[13,13];
 
 		private PlayerTank playerOneTank;
 		private PlayerTank playerTwoTank;
@@ -238,9 +238,10 @@ namespace BattleCity
 			{
 				var field = e as Field;
 				if (field != null) {
-					fields[field.column, field.row] = field;
+					fields[field.row, field.column] = field;
 				}
 			}
+			MovementHelper.GetInstance().levelElements = fields;
 		}
 
 		public void MoveFromEditorToMainScreen()
