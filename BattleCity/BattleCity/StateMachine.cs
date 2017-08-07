@@ -239,6 +239,7 @@ namespace BattleCity
 				var field = e as Field;
 				if (field != null) {
 					fields[field.row, field.column] = field;
+					field.SetState();
 				}
 			}
 			MovementHelper.GetInstance().levelElements = fields;
