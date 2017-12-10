@@ -19,36 +19,33 @@ namespace BattleCity.Helpers
 		{
 			double delta = (double)tank.Clock.ElapsedMilliseconds / 1000;
 			tank.Clock.Restart();
-			bool collision = Collision(tank);
 
-			if (!collision)
+			double nextPositionX =0, nextPositionY =0;
+
+			switch (tank.Direction)
 			{
-				switch (tank.Direction)
-				{
-					case Direction.Up:
-						tank.PositionX = Trim(tank.PositionX);
-						tank.PositionY -= delta * tank.Speed;
-						break;
-					case Direction.Down:
-						tank.PositionX = Trim(tank.PositionX);
-						tank.PositionY += delta * tank.Speed;
-						break;
-					case Direction.Left:
-						tank.PositionY = Trim(tank.PositionY);
-						tank.PositionX -= delta * tank.Speed;
-						break;
-					case Direction.Right:
-						tank.PositionY = Trim(tank.PositionY);
-						tank.PositionX += delta * tank.Speed;
-						break;
-				}
+				case Direction.Up:
+					nextPositionX = Trim(tank.PositionX);
+					nextPositionY = tank.PositionY - delta * tank.Speed;
+					break;
+				case Direction.Down:
+					nextPositionX = Trim(tank.PositionX);
+					nextPositionY = tank.PositionY + delta * tank.Speed;
+					break;
+				case Direction.Left:
+					nextPositionY = Trim(tank.PositionY);
+					nextPositionX = tank.PositionX - delta * tank.Speed;
+					  break;
+				case Direction.Right:
+					nextPositionY = Trim(tank.PositionY);
+					nextPositionX = tank.PositionX + delta * tank.Speed;
+					break;
 			}
-			else
+			if (!Collision(tank, nextPositionX, nextPositionY))
 			{
-				tank.PositionX = Trim(tank.PositionX);
-				tank.PositionY = Trim(tank.PositionY);
+				tank.PositionX = nextPositionX;
+				tank.PositionY = nextPositionY;
 			}
-			BoundaryCollision(tank);
 		}
 
 		private int Trim(double position)
@@ -75,23 +72,27 @@ namespace BattleCity.Helpers
 			}
 		}
 
-		private bool Collision(AbstractTank tank)
+		private bool Collision(AbstractTank tank, double posX, double posY)
 		{
-			int tankRow = (int)(tank.PositionY) / 32;
-			int tankColumn = (int)(tank.PositionX) / 32;
+			int tankColumn = (int)(posX) / 32;
+			int tankRow = (int)(posY) / 32;
+			return CollisionWithField(tank, tankColumn, tankRow) || CollisionWithBounds(posX, posY);
+		}
 
-			if(tank.Direction == Direction.Up || tank.Direction == Direction.Down)
+		private bool CollisionWithField(AbstractTank tank, int tankColumn, int tankRow)
+		{
+			if (tank.Direction == Direction.Up || tank.Direction == Direction.Down)
 			{
 				bool halfColumn = Trim(tank.PositionY) % 2 == 0;
 				for (int i = 0; i < 13; i++)
-					{
-						if (CheckCollision(tank, levelElements[i, tankColumn]))
-							return true;
+				{
+					if (CheckCollision(tank, levelElements[i, tankColumn]))
+						return true;
 				}
 			}
-			if(tank.Direction == Direction.Left || tank.Direction == Direction.Right)
+			if (tank.Direction == Direction.Left || tank.Direction == Direction.Right)
 			{
-				for(int i = 0; i < 13; i++)
+				for (int i = 0; i < 13; i++)
 				{
 					if (CheckCollision(tank, levelElements[tankRow, i]))
 					{
@@ -141,24 +142,13 @@ namespace BattleCity.Helpers
 			else return 0;
 		} 
 
-		private void BoundaryCollision(AbstractTank tank)
+		private bool CollisionWithBounds(double posX, double posY)
 		{
-			if (tank.PositionX < 16)
+			if (posX < 16 || posX > 400 || posY < 16 || posY > 400)
 			{
-				tank.PositionX = 16;
+				return true;
 			}
-			else if (tank.PositionX > 400)
-			{
-				tank.PositionX = 400;
-			}
-			if (tank.PositionY < 16)
-			{
-				tank.PositionY = 16;
-			}
-			else if (tank.PositionY > 400)
-			{
-				tank.PositionY = 400;
-			}
+			else return false;
 		}
 	}
 }
